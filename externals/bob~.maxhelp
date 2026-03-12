@@ -9,8 +9,20 @@
             "modernui": 1
         },
         "classnamespace": "box",
-        "rect": [ 72.0, 320.0, 959.0, 429.0 ],
+        "rect": [ 68.0, 316.0, 959.0, 429.0 ],
         "boxes": [
+            {
+                "box": {
+                    "id": "obj-2",
+                    "linecount": 2,
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 554.0, 283.0, 169.0, 33.0 ],
+                    "presentation_linecount": 2,
+                    "text": "Julien Bayle / Structure Void\nhttps://structure-void.com"
+                }
+            },
             {
                 "box": {
                     "fontsize": 24.068616739345075,
@@ -19,7 +31,7 @@
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 248.0, 9.0, 296.0, 60.0 ],
+                    "patching_rect": [ 248.0, 9.0, 301.0, 60.0 ],
                     "text": "Moog ladder resonant filter simulation for Max/MSP."
                 }
             },
@@ -42,7 +54,6 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 312.0, 114.5, 71.0, 33.0 ],
-                    "presentation_linecount": 2,
                     "text": "cutoff frequency"
                 }
             },

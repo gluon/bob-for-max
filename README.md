@@ -7,6 +7,8 @@ Platforms : macOS (intel, silicon) + win
 
 The filter is implemented using **Runge-Kutta numerical integration** of a nonlinear differential equation modelling the Moog transistor ladder.
 
+(thanks to Mathieu Staub for pointing me to bob~ during this class discussion)
+
 References:
 
 - Tim Stilson — *Analyzing the Moog VCF with Considerations for Digital Implementation*

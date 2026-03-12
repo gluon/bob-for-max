@@ -34,8 +34,8 @@ S(x) = saturation function
 
 Inlets:
 1. signal input
-2. cutoff frequency (Hz) — signal or float
-3. resonance — signal or float
+2. cutoff frequency (Hz) — signal or double
+3. resonance — signal or double
 
 Outlet:
 1. filtered signal
@@ -45,19 +45,18 @@ Standard Improved BSD License (see LICENSE.txt)
 */
 
 #define DIM 4
-#define FLOAT double
 
 typedef struct _params {
-    FLOAT p_input;
-    FLOAT p_cutoff;
-    FLOAT p_resonance;
-    FLOAT p_saturation;
+    double p_input;
+    double p_cutoff;
+    double p_resonance;
+    double p_saturation;
 } t_params;
 
 typedef struct _bob {
     t_pxobject x_obj;
     t_params   x_params;
-    FLOAT      x_state[DIM];
+    double      x_state[DIM];
     double     x_sr;
     int        x_oversample;
     double     default_cutoff;
@@ -70,21 +69,21 @@ static t_class *bob_class;
 
 void bob_assist(t_bob *x, void *b, long m, long a, char *s);
 
-static inline FLOAT clip(FLOAT value, FLOAT saturation, FLOAT satinv) {
-    FLOAT v2 = (value * satinv > 1.0 ? 1.0 : (value * satinv < -1.0 ? -1.0 : value * satinv));
+static inline double clip(double value, double saturation, double satinv) {
+    double v2 = (value * satinv > 1.0 ? 1.0 : (value * satinv < -1.0 ? -1.0 : value * satinv));
     return (saturation * (v2 - (1.0/3.0) * v2 * v2 * v2));
 }
 
-static void calc_derivatives(FLOAT *dstate, FLOAT *state, t_params *params) {
+static void calc_derivatives(double *dstate, double *state, t_params *params) {
 
-    FLOAT k = (2.0 * M_PI) * params->p_cutoff;
+    double k = (2.0 * M_PI) * params->p_cutoff;
 
-    FLOAT sat = params->p_saturation;
-    FLOAT satinv = 1.0 / sat;
+    double sat = params->p_saturation;
+    double satinv = 1.0 / sat;
 
-    FLOAT satstate0 = clip(state[0], sat, satinv);
-    FLOAT satstate1 = clip(state[1], sat, satinv);
-    FLOAT satstate2 = clip(state[2], sat, satinv);
+    double satstate0 = clip(state[0], sat, satinv);
+    double satstate1 = clip(state[1], sat, satinv);
+    double satstate2 = clip(state[2], sat, satinv);
 
     dstate[0] = k * (clip(params->p_input - params->p_resonance * state[3], sat, satinv) - satstate0);
     dstate[1] = k * (satstate0 - satstate1);
@@ -92,15 +91,15 @@ static void calc_derivatives(FLOAT *dstate, FLOAT *state, t_params *params) {
     dstate[3] = k * (satstate2 - clip(state[3], sat, satinv));
 }
 
-static void solver_rungekutte(FLOAT *state, FLOAT stepsize, t_params *params) {
+static void solver_rungekutte(double *state, double stepsize, t_params *params) {
 
     int i;
 
-    FLOAT deriv1[DIM];
-    FLOAT deriv2[DIM];
-    FLOAT deriv3[DIM];
-    FLOAT deriv4[DIM];
-    FLOAT tempstate[DIM];
+    double deriv1[DIM];
+    double deriv2[DIM];
+    double deriv3[DIM];
+    double deriv4[DIM];
+    double tempstate[DIM];
 
     calc_derivatives(deriv1, state, params);
 
@@ -141,12 +140,12 @@ void bob_perform64(
 
     double *out = outs[0];
 
-    FLOAT s0 = x->x_state[0];
-    FLOAT s1 = x->x_state[1];
-    FLOAT s2 = x->x_state[2];
-    FLOAT s3 = x->x_state[3];
+    double s0 = x->x_state[0];
+    double s1 = x->x_state[1];
+    double s2 = x->x_state[2];
+    double s3 = x->x_state[3];
 
-    FLOAT stepsize = 1.0 / (x->x_oversample * x->x_sr);
+    double stepsize = 1.0 / (x->x_oversample * x->x_sr);
 
     t_params p = x->x_params;
 
@@ -164,7 +163,7 @@ void bob_perform64(
         else
             p.p_resonance = x->default_resonance;
 
-        FLOAT current_state[4] = {s0, s1, s2, s3};
+        double current_state[4] = {s0, s1, s2, s3};
 
         for (int j = 0; j < x->x_oversample; j++) {
             solver_rungekutte(current_state, stepsize, &p);
@@ -275,8 +274,8 @@ void bob_assist(t_bob *x, void *b, long m, long a, char *s)
     if (m == ASSIST_INLET) {
         switch (a) {
             case 0: snprintf(s, 256, "(signal) input"); break;
-            case 1: snprintf(s, 256, "(signal/float) cutoff frequency (Hz)"); break;
-            case 2: snprintf(s, 256, "(signal/float) resonance"); break;
+            case 1: snprintf(s, 256, "(signal/double) cutoff frequency (Hz)"); break;
+            case 2: snprintf(s, 256, "(signal/double) resonance"); break;
         }
     } else {
         snprintf(s, 256, "(signal) filtered output");
@@ -304,7 +303,7 @@ C74_EXPORT void ext_main(void *r) {
 
     class_addmethod(c,
         (method)bob_float,
-        "float",
+        "double",
         A_FLOAT,
         0);
 

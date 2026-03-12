@@ -3,7 +3,7 @@
 Moog ladder resonant filter simulation for Max/MSP.
 
 Port of the **bob~** object from **Pure Data**, originally written by  **Miller Puckette**.
-Platform : macOS (intel, silicon)
+Platforms : macOS (intel, silicon) + win
 
 The filter is implemented using **Runge-Kutta numerical integration** of a nonlinear differential equation modelling the Moog transistor ladder.
 

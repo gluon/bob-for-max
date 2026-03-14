@@ -19,7 +19,7 @@ References:
 
 ## Installation
 
-1. Download the latest release: [bob-for-max-v1.0.0.zip](INSERT_LINK_HERE)
+1. Download the latest release: [bob-for-max-v1.0.0.zip](https://github.com/gluon/bob-for-max/releases)
 2. Unzip the archive.
 3. Place the `bob~` folder into your Max Packages directory:
    - **macOS**: `~/Documents/Max 9/Packages/`

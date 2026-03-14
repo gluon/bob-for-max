@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<c74object name="bob~" category="Audio, Filter">
+
+	<digest>
+		Moog analog lowpass resonant filter simulation
+	</digest>
+
+	<description>
+		bob~ imitates a Moog transistor ladder resonant filter. 
+		It uses Runge-Kutta numerical integration to solve the differential equations 
+		describing the analog circuit dynamics. 
+
+		This implementation is based on the original design by Miller Puckette 
+		for Pure Data. It provides an authentic nonlinear response, especially 
+		at high resonance levels where the transistor saturation characteristics 
+		shape the sound.
+
+		The filter is oversampled to ensure stability and high-frequency accuracy.
+	</description>
+
+	<objarglist>
+
+		<objarg name="cutoff" type="float" optional="1">
+			<digest>
+				Initial cutoff frequency
+			</digest>
+			<description>
+				Sets the initial cutoff frequency in Hz. Default is 500 Hz.
+			</description>
+		</objarg>
+
+		<objarg name="resonance" type="float" optional="1">
+			<digest>
+				Initial resonance
+			</digest>
+			<description>
+				Sets the initial resonance amount (typically 0 to 4). Default is 0.5.
+			</description>
+		</objarg>
+
+	</objarglist>
+
+	<inletlist>
+
+		<inlet index="1" type="signal">
+			<digest>
+				Signal input
+			</digest>
+			<description>
+				Audio signal to be filtered.
+			</description>
+		</inlet>
+
+		<inlet index="2" type="signal/float">
+			<digest>
+				Cutoff frequency (Hz)
+			</digest>
+			<description>
+				Cutoff frequency in Hz. Can be controlled by a signal or a float message.
+			</description>
+		</inlet>
+
+		<inlet index="3" type="signal/float">
+			<digest>
+				Resonance
+			</digest>
+			<description>
+				Resonance amount. Usually stable up to 4.0. Above 4.0, the filter will self-oscillate.
+			</description>
+		</inlet>
+
+	</inletlist>
+
+	<outletlist>
+
+		<outlet index="1" type="signal">
+			<digest>
+				Filtered signal output
+			</digest>
+			<description>
+				The 4-pole (24dB/oct) lowpass filtered output.
+			</description>
+		</outlet>
+
+	</outletlist>
+
+	<attributelist>
+
+		<attribute name="oversample" type="int" size="1" get="1" set="1">
+			<digest>
+				Oversampling factor
+			</digest>
+			<description>
+				Sets the internal oversampling factor (default is 2). 
+				Higher values improve accuracy and stability at high frequencies 
+				at the cost of higher CPU usage.
+			</description>
+		</attribute>
+
+		<attribute name="saturation" type="double" size="1" get="1" set="1">
+			<digest>
+				Saturation ceiling
+			</digest>
+			<description>
+				Sets the saturation level of the transistor simulation. 
+				Default value is 3.0. Lower values increase the nonlinear 
+				distortion within the filter ladder.
+			</description>
+		</attribute>
+
+	</attributelist>
+
+	<methodlist>
+		<method name="clear">
+			<digest>
+				Clear filter state
+			</digest>
+			<description>
+				Resets the internal state variables (capacitors) to zero. 
+				Useful to stop feedback or clear NaNs if the filter explodes.
+			</description>
+		</method>
+	</methodlist>
+
+	<seealsolist>
+		<seealso name="lores~"/>
+		<seealso name="svf~"/>
+		<seealso name="cascade~"/>
+		<seealso name="z~"/>
+	</seealsolist>
+
+</c74object>

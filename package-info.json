@@ -1,0 +1,63 @@
+{
+	"name": "bob~",
+	"displayname": "bob~ (Moog Filter)",
+	"version": "1.0.0",
+	"author": "Julien Bayle",
+	"authors": [
+		"Julien Bayle — Structure Void"
+	],
+	"description": "Portage de l'objet Pure Data bob~ vers Max. Simulation fidèle du filtre passe-bas à échelle de transistors Moog utilisant l'intégration numérique de Runge-Kutta pour une réponse analogique authentique.",
+	"tags": [
+		"externals",
+		"audio",
+		"dsp",
+		"filter",
+		"moog",
+		"analog-simulation",
+		"synthesis"
+	],
+	"website": "https://structure-void.com/",
+	"extends": "",
+	"extensible": 0,
+
+	"max_version_min": "8.0.0",
+	"max_version_max": "none",
+
+	"os": {
+		"macintosh": {
+			"min_version": "none",
+			"platform": [ "x64", "arm64" ]
+		},
+		"windows": {
+			"min_version": "none",
+			"platform": [ "x64" ]
+		}
+	},
+
+	"homepatcher": "bob~.maxhelp",
+
+	"package_extra": {
+		"reverse_domain": "com.structure-void",
+		"copyright": "Copyright (c) 2026 Structure Void"
+	},
+
+	"filelist": {
+		"externals": [
+			"bob~.mxo",
+			"bob~.mxe64"
+		],
+
+		"help": [
+			"bob~.maxhelp"
+		],
+
+		"docs": [
+			"bob~.maxref.xml"
+		],
+
+		"extras": [
+		]
+	},
+
+	"c74install": 0
+}

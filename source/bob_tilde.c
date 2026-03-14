@@ -154,14 +154,20 @@ void bob_perform64(
         p.p_input = in[i];
 
         if (x->x_cutoff_connected)
-            p.p_cutoff = (cutoff_sig[i] < 20.0) ? 20.0 : cutoff_sig[i];
-        else
-            p.p_cutoff = x->default_cutoff;
+                p.p_cutoff = cutoff_sig[i];
+            else
+                p.p_cutoff = x->default_cutoff;
+        
+        if (p.p_cutoff < 1.0) p.p_cutoff = 1.0;
+        if (p.p_cutoff > x->x_sr * 0.45) p.p_cutoff = x->x_sr * 0.45;
 
         if (x->x_res_connected)
-            p.p_resonance = (res_sig[i] < 0.0) ? 0.0 : res_sig[i];
-        else
-            p.p_resonance = x->default_resonance;
+                p.p_resonance = res_sig[i];
+            else
+                p.p_resonance = x->default_resonance;
+        
+        if (p.p_resonance < 0.0) p.p_resonance = 0.0;
+        if (p.p_resonance > 4.5) p.p_resonance = 4.5;
 
         double current_state[4] = {s0, s1, s2, s3};
 
@@ -327,6 +333,8 @@ C74_EXPORT void ext_main(void *r) {
     CLASS_ATTR_FILTER_MIN(c,
         "oversample",
         1);
+    
+    CLASS_ATTR_FILTER_CLIP(c, "oversample", 1, 32);
 
     CLASS_ATTR_DOUBLE(c,
         "saturation",
@@ -334,9 +342,7 @@ C74_EXPORT void ext_main(void *r) {
         t_bob,
         x_params.p_saturation);
 
-    CLASS_ATTR_FILTER_MIN(c,
-        "saturation",
-        0.001);
+    CLASS_ATTR_FILTER_CLIP(c, "saturation", 0.001, 100.0);
 
     class_dspinit(c);
 
